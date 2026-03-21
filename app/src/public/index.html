@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>DevSecOps Dashboard</title>
+
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(135deg, #0f172a, #1e293b);
+      color: #e2e8f0;
+    }
+
+    header {
+      text-align: center;
+      padding: 20px;
+      font-size: 24px;
+      font-weight: bold;
+    }
+
+    .container {
+      display: flex;
+      justify-content: center;
+      margin-top: 40px;
+    }
+
+    .card {
+      background: rgba(30, 41, 59, 0.7);
+      padding: 30px;
+      border-radius: 16px;
+      width: 400px;
+      box-shadow: 0 0 20px rgba(0,0,0,0.5);
+    }
+
+    .title {
+      margin-bottom: 20px;
+      font-size: 20px;
+      text-align: center;
+      color: #38bdf8;
+    }
+
+    .item {
+      margin: 10px 0;
+      font-size: 16px;
+    }
+
+    .green { color: #22c55e; }
+    .red { color: #ef4444; }
+
+    .json-box {
+      background: #020617;
+      padding: 10px;
+      border-radius: 8px;
+      font-size: 12px;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+
+<body>
+
+<header>🚀 DevSecOps Dashboard</header>
+
+<div class="container">
+  <div class="card">
+    <div class="title">Application Status</div>
+
+    <div class="item" id="status">Loading...</div>
+    <div class="item" id="env"></div>
+    <div class="item" id="version"></div>
+
+    <div class="json-box" id="api">Fetching...</div>
+  </div>
+</div>
+
+<script>
+  async function loadData() {
+    try {
+      const res = await fetch('/api/status');
+      const data = await res.json();
+
+      document.getElementById('status').innerHTML =
+        '<span class="green">🟢 ' + data.status + '</span>';
+
+      document.getElementById('env').innerText =
+        'Environment: ' + data.environment;
+
+      document.getElementById('version').innerText =
+        'Version: ' + data.version;
+
+      document.getElementById('api').innerText =
+        JSON.stringify(data, null, 2);
+
+    } catch (err) {
+      document.getElementById('status').innerHTML =
+        '<span class="red">🔴 DOWN</span>';
+    }
+  }
+
+  loadData();
+</script>
+
+</body>
+</html>
