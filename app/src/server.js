@@ -1,30 +1,35 @@
 const express = require('express');
-const app = express();
+const client = require('prom-client');
 
+const app = express();
 const PORT = 4000;
 
-app.use(express.static(__dirname + '/public'));
+// Default metrics (CPU, memory, etc.)
+client.collectDefaultMetrics();
 
-// Root route
+// Custom metric
+const httpRequestCounter = new client.Counter({
+  name: 'http_requests_total',
+  help: 'Total number of HTTP requests',
+});
+
+// Middleware
+app.use((req, res, next) => {
+  httpRequestCounter.inc();
+  next();
+});
+
+// Your existing route
 app.get('/', (req, res) => {
-  res.send('🚀 DevSecOps Pipeline App is Running');
+  res.send("DevSecOps App Running 🚀");
 });
 
-// Health check (for Kubernetes later)
-app.get('/health', (req, res) => {
-  res.status(200).json({ status: 'UP' });
+// 👉 THIS IS THE IMPORTANT PART
+app.get('/metrics', async (req, res) => {
+  res.set('Content-Type', client.register.contentType);
+  res.end(await client.register.metrics());
 });
 
-// API endpoint (for UI later)
-app.get('/api/status', (req, res) => {
-  res.json({
-    status: 'Running',
-    environment: 'Production',
-    version: '1.0.0'
-  });
-});
-
-// Start server
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
