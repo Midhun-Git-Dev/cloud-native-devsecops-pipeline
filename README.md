@@ -190,7 +190,8 @@ Prometheus scrapes the application's `/metrics` endpoint and feeds data into Gra
 ---
 
 ## 📁 Project Structure
-
+ 
+```
 cloud-native-devsecops-pipeline/
 │
 ├── .github/                        # GitHub Actions CI/CD workflows
@@ -211,6 +212,9 @@ cloud-native-devsecops-pipeline/
 ├── docker-compose.yml              # Multi-service orchestration
 ├── .gitignore
 └── README.md
+```
+ 
+---
 
 ## 🧑‍💻 Author
 
