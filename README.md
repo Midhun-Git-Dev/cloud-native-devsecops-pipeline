@@ -191,23 +191,26 @@ Prometheus scrapes the application's `/metrics` endpoint and feeds data into Gra
 
 ## 📁 Project Structure
 
-```
-.
-├── app/
-│   ├── index.js          # Node.js application with /metrics endpoint
-│   ├── package.json
-│   └── Dockerfile
-├── prometheus/
-│   └── prometheus.yml    # Scrape config — targets app:4000/metrics
-├── grafana/
-│   └── provisioning/     # Dashboard and datasource config
-├── docker-compose.yml    # Multi-service orchestration
-└── .github/
-    └── workflows/
-        └── deploy.yml    # GitHub Actions CI/CD pipeline
-```
-
----
+cloud-native-devsecops-pipeline/
+│
+├── .github/                        # GitHub Actions CI/CD workflows
+│   └── workflows/
+│       └── deploy.yml              # Pipeline: build → scan → deploy
+│
+├── app/                            # Node.js application
+│   ├── index.js                    # App entry point with /metrics endpoint
+│   ├── package.json                # Dependencies
+│   └── Dockerfile                  # Container image definition
+│
+├── terraform/                      # Infrastructure as Code
+│   ├── main.tf                     # EC2 instance + security groups
+│   ├── variables.tf                # Input variables
+│   └── outputs.tf                  # Output values (public IP, etc.)
+│
+├── prometheus.yml                  # Prometheus scrape config
+├── docker-compose.yml              # Multi-service orchestration
+├── .gitignore
+└── README.md
 
 ## 🧑‍💻 Author
 
